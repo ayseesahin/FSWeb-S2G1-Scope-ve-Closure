@@ -55,10 +55,14 @@ function skor2() {
 
 /*
 1. skor1 ve skor2 arasındaki fark nedir? 
-Değikenlerin saklama ve erişim yöntemleri farklıdır. Skor1 fonksiyonun içinde tanımlanmıştır, fonksiyon dışında kullanılamaz. Skor2 içindeki fonksiyonun yanı sıra, programın herhangi bir yerindeki herhangi bir fonksiyon tarafından da değiştirilebilir.
+skor1'e sadece skorGuncelle() fonksiyonun içinde erişilebilir, fonksiyonun dışında kullanılamaz; skor2'ye ise kodun herhangi bir yerinden erişilebilir ve değiştirilebilir, global bir skor değişkeni kullanır.
 
 2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin?
-skor1 içinde, skor değişkeni closure tarafından özel olarak tutulur ve dış dünyadan gizlenir. Bu değişken sadece closure içindeki skorGuncelle fonksiyonu tarafından değiştirilebilir ve dışarıdan erişilemez. 
+skor1 bir closure kullanır. Closure, bir iç fonksiyonun, dışarıda tanımlanmış bir değişkene veya fonksiyona erişmesini sağlayan bir yapıdır. Bu durumda skorArtirici fonksiyonu içinde tanımlanan skor değişkeni, skorGuncelle fonksiyonu tarafından kullanılabilir. Bu nedenle, skor1 bir closure kullanır.
+
+3. Hangi durumda skor1 tercih edilebilir? Hangi durumda skor2 daha mantıklıdır?
+skor1, yalnızca belirli bir işlev aracılığıyla erişilebilen ve değiştirilebilen özel bir değişkeni korumamız gerektiğinde tercih edilebilir, farklı bölümlerde değişkenin istenmeden değiştirilmesini önlemeye yardımcı olur. skor2, birden fazla fonksiyondan erişilebilen ve değiştirilebilen global bir değişkene ihtiyacımız olduğunda kullanılır. 
+
 
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -143,9 +147,9 @@ function periyotSkoru(skorPeriyot) {
     "KonukTakim": skorPeriyot(),
 }
 return obje;
-  };
+};
   
-  console.log(periyotSkoru(takimSkoru));
+console.log(periyotSkoru(takimSkoru));
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -179,15 +183,43 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(periyotSkoruP, takimSkoruP, ceyrekSayisi) {
-  for(let i = 0; i < ceyrekSayisi; i++) {
-    
+
+
+function skorTabelasi(periyotSkoruP, takimSkoruP, skorP) {
+  
+  const scoreArray = [];
+
+  let evSahibiSkor = 0;
+  let konukTakimSkor = 0;
+
+  for (let i = 1; i <= skorP; i++) {
+    const periodScoreResult = periyotSkoruP(takimSkoruP);
+    const homeScore = periodScoreResult.EvSahibi;
+    const guestScore = periodScoreResult.KonukTakim;
+    evSahibiSkor = evSahibiSkor + homeScore;
+    konukTakimSkor = konukTakimSkor + guestScore;
+    const scoreBacktick = `${i}. Periyot: Ev Sahibi ${homeScore} - Konuk Takım ${guestScore}`;
+    scoreArray.push(scoreBacktick);
+    // eğer son skorPda isek ve skorlar aynıysa
+    if (skorP == i && evSahibiSkor == konukTakimSkor) {
+      const periodScoreResultE = periyotSkoruP(takimSkoruP);
+      const homeScoreE = periodScoreResult.EvSahibi;
+      const guestScoreE = periodScoreResult.KonukTakim;
+      evSahibiSkor = evSahibiSkor + homeScoreE;
+      konukTakimSkor = konukTakimSkor + guestScoreE;
+      scoreArray.push(`1. Uzatma: Ev Sahibi ${homeScoreE} - Konuk Takım ${guestScoreE}`);
+    }
   }
 
+  scoreArray.push(
+    `Maç Sonucu: Ev Sahibi ${evSahibiSkor} - Konuk Takım ${konukTakimSkor}`
+  );
+
+  return [...scoreArray];
 }
 
-
 console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
+
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
 function sa(){
