@@ -53,6 +53,12 @@ function skor2() {
   return skor++;
 }
 
+/*
+1. skor1 ve skor2 arasındaki fark nedir? 
+Değikenlerin saklama ve erişim yöntemleri farklıdır. Skor1 fonksiyonun içinde tanımlanmıştır, fonksiyon dışında kullanılamaz. Skor2 içindeki fonksiyonun yanı sıra, programın herhangi bir yerindeki herhangi bir fonksiyon tarafından da değiştirilebilir.
+
+2. Hangisi bir closure kullanmaktadır? Nasıl tarif edebilirsin?
+skor1 içinde, skor değişkeni closure tarafından özel olarak tutulur ve dış dünyadan gizlenir. Bu değişken sadece closure içindeki skorGuncelle fonksiyonu tarafından değiştirilebilir ve dışarıdan erişilemez. 
 
 /* Görev 2: takimSkoru() 
 Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
@@ -64,11 +70,12 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
-}
-
-
+function takimSkoru() {
+  const minSkor = 10;
+  const maxSkor = 25;
+  return Math.floor(Math.random() * (maxSkor - minSkor + 1)) + minSkor;
+  }
+console.log(takimSkoru());
 
 
 /* Görev 3: macSonucu() 
@@ -86,10 +93,30 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
-}
+function macSonucu(skor, no) {
+  
 
+  let evSahibiSkor =0;
+  let konukSkor = 0;
+  for(let i = 0; i< no; i++){
+  
+  evSahibiSkor = evSahibiSkor +skor();
+  }
+  
+  for(let i = 0; i < no; i++){
+  
+    konukSkor = konukSkor + skor(); 
+    }
+  
+  const obje ={
+  "EvSahibi" : evSahibiSkor,
+  "KonukTakim" : konukSkor,
+  
+  };
+  
+  return obje;
+  }
+  console.log(macSonucu(takimSkoru, 4));
 
 
 
@@ -109,10 +136,16 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(skorPeriyot) {
 
+  const obje = {
+    "EvSahibi": skorPeriyot(),
+    "KonukTakim": skorPeriyot(),
 }
+return obje;
+  };
+  
+  console.log(periyotSkoru(takimSkoru));
 
 
 /* Zorlayıcı Görev 5: skorTabelasi() 
@@ -146,12 +179,15 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periyotSkoruP, takimSkoruP, ceyrekSayisi) {
+  for(let i = 0; i < ceyrekSayisi; i++) {
+    
+  }
+
 }
 
 
-
+console.log(skorTabelasi(periyotSkoru, takimSkoru, 4));
 
 /* Aşağıdaki satırları lütfen değiştirmeyiniz*/
 function sa(){
